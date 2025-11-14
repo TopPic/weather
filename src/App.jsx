@@ -11,7 +11,7 @@ function App() {
     const fecthWeather = async () => {
       try {
         const res = await axios.get(
-         `https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=${APP_ID}`
+          `https://api.openweathermap.org/data/2.5/weather?q=Bangkok&units=metric&appid=${APP_ID}`
         );
         const data_format = await res.data;
         console.log(`ข้อมูลสภาพอากาศ ${JSON.stringify(data_format, null, 2)}`);
@@ -64,10 +64,10 @@ function App() {
                   ☁️
                 </div>
                 <div id="temperature" className="text-3xl font-bold mb-1">
-                  31°C
+                  {weather.main?.temp}°C
                 </div>
                 <div id="city-name" className="text-sm opacity-90">
-                  Bangkok
+                  {weather.name}
                 </div>
               </div>
             </div>
@@ -88,7 +88,7 @@ function App() {
             <div className="card stat-card bg-white bg-opacity-20 backdrop-blur-lg rounded-2xl p-6 text-white">
               <div className="text-sm opacity-90 mb-2">🌡️ รู้สึกเหมือน</div>
               <div id="feels-like" className="text-4xl font-bold mb-1">
-                38
+                {weather.main?.feels_like}
               </div>
               <div className="text-xs opacity-75">°C</div>
             </div>
@@ -103,13 +103,13 @@ function App() {
                   id="temperature-large"
                   className="text-6xl font-bold text-gray-800 mb-2"
                 >
-                  31°C
+                  {weather.main?.temp}°C
                 </div>
                 <div
                   id="city-name-large"
                   className="text-2xl font-semibold text-gray-600 mb-2"
                 >
-                  Bangkok
+                  {weather.name}
                 </div>
                 <div
                   id="description-large"
@@ -135,7 +135,7 @@ function App() {
                     id="wind-speed-large"
                     className="text-xl font-bold text-gray-800"
                   >
-                    1.18 m/s
+                    {weather.wind?.speed} m/s
                   </span>
                 </div>
                 <div className="flex justify-between items-center p-4 bg-gradient-to-r from-cyan-50 to-cyan-100 rounded-xl">
@@ -147,7 +147,7 @@ function App() {
                     id="humidity-large"
                     className="text-xl font-bold text-gray-800"
                   >
-                    76%
+                    {weather.main?.humidity}%
                   </span>
                 </div>
                 <div className="flex justify-between items-center p-4 bg-gradient-to-r from-orange-50 to-orange-100 rounded-xl">
@@ -161,7 +161,7 @@ function App() {
                     id="feels-like-large"
                     className="text-xl font-bold text-gray-800"
                   >
-                    38°C
+                     {weather.main?.feels_like}°C
                   </span>
                 </div>
                 <div className="flex justify-between items-center p-4 bg-gradient-to-r from-purple-50 to-purple-100 rounded-xl">
