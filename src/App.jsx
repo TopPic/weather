@@ -4,13 +4,14 @@ import axios from "axios";
 import { useEffect } from "react";
 
 function App() {
+  const APP_ID = import.meta.env.VITE_openweathermap_appid;
   const [weather, setWeather] = useState([]);
 
   useEffect(() => {
     const fecthWeather = async () => {
       try {
         const res = await axios.get(
-          "https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=26e2fd775068dfad6ab811b2128f83fa"
+         `https://api.openweathermap.org/data/2.5/weather?q=Bangkok&appid=${APP_ID}`
         );
         const data_format = await res.data;
         console.log(`ข้อมูลสภาพอากาศ ${JSON.stringify(data_format, null, 2)}`);
@@ -80,7 +81,7 @@ function App() {
             <div className="card stat-card bg-white bg-opacity-20 backdrop-blur-lg rounded-2xl p-6 text-white">
               <div className="text-sm opacity-90 mb-2">💧 ความชื้น</div>
               <div id="humidity" className="text-4xl font-bold mb-1">
-               {weather.main?.humidity}
+                {weather.main?.humidity}
               </div>
               <div className="text-xs opacity-75">%</div>
             </div>
