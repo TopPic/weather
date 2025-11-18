@@ -6,6 +6,7 @@ import { useEffect } from "react";
 function App() {
   const APP_ID = import.meta.env.VITE_openweathermap_appid;
   const [weather, setWeather] = useState([]);
+  const [time, setTime] = useState(new Date());
 
   useEffect(() => {
     const fecthWeather = async () => {
@@ -14,7 +15,7 @@ function App() {
           `https://api.openweathermap.org/data/2.5/weather?q=Bangkok&units=metric&appid=${APP_ID}`
         );
         const data_format = await res.data;
-        console.log(`ข้อมูลสภาพอากาศ ${JSON.stringify(data_format, null, 2)}`);
+        // console.log(`ข้อมูลสภาพอากาศ ${JSON.stringify(data_format, null, 2)}`);
         setWeather(data_format);
       } catch (error) {
         console.log("Error Fecth", error);
@@ -22,9 +23,41 @@ function App() {
     };
     fecthWeather();
   }, []);
+
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timerId);
+  }, []);
+
   if (!weather) {
     return <div> Loading...</div>;
   }
+
+  const getGreeting = () => {
+    const hour = time.getHours();
+    if (hour < 12) {
+      return "Good Morning!";
+    } else if (hour < 18) {
+      return "Good Afternoon!  belatedly";
+    } else {
+      return "Good Evening!";
+    }
+  };
+
+  // console.log(getGreeting);
+
+  const today = new Date();
+  const options = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  const formattedDate = today.toLocaleDateString("th-TH", options);
+
   return (
     <>
       <main className="min-h-screen p-4 md:p-8">
@@ -42,18 +75,23 @@ function App() {
                   id="welcome-message"
                   className="text-xl text-white opacity-90"
                 >
-                  สวัสดีตอนเช้า! 👋
+                  {/* สวัสดีตอนเช้า! 👋 */}
+                  {getGreeting()}
                 </p>
               </div>
               <div className="text-right">
                 <div
                   id="current-time"
                   className="text-3xl font-bold text-white"
-                ></div>
+                >
+                  {time.toLocaleTimeString("th-TH")} น.
+                </div>
                 <div
                   id="current-date"
                   className="text-sm text-white opacity-90"
-                ></div>
+                >
+                  {formattedDate}
+                </div>
               </div>
             </div>
           </header>
@@ -161,7 +199,7 @@ function App() {
                     id="feels-like-large"
                     className="text-xl font-bold text-gray-800"
                   >
-                     {weather.main?.feels_like}°C
+                    {weather.main?.feels_like}°C
                   </span>
                 </div>
                 <div className="flex justify-between items-center p-4 bg-gradient-to-r from-purple-50 to-purple-100 rounded-xl">
